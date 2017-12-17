@@ -13,11 +13,7 @@
 
     <dependencies>
     	
-    	<dependency>
-    <groupId>com.spotify</groupId>
-    <artifactId>docker-maven-plugin</artifactId>
-    <version>1.0.0</version>
-</dependency>
+    	
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -64,6 +60,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <docker.image.name>arno123/reviewservice</docker.image.name>
+        <docker.image.tag>main</docker.image.tag>
     </properties>
 
 
@@ -73,6 +71,44 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+               <artifactId>maven-resources-plugin</artifactId>
+               <executions>
+                   <execution>
+                       <id>copy-resources</id>
+                       <!-- here the phase you need -->
+                       <phase>validate</phase>
+                       <goals>
+                           <goal>copy-resources</goal>
+                       </goals>
+                       <configuration>
+                           <outputDirectory>${basedir}/target/dockerfile</outputDirectory>
+                           <resources>
+                               <resource>
+                                   <directory>src/main/docker</directory>
+                                   <filtering>true</filtering>
+                               </resource>
+                           </resources>
+                       </configuration>
+                   </execution>
+               </executions>
+           </plugin>
+           <plugin>
+               <groupId>com.spotify</groupId>
+               <artifactId>docker-maven-plugin</artifactId>
+               <version>0.4.10</version>
+               <configuration>
+                   <imageName>${docker.image.name}:${docker.image.tag}</imageName>
+                   <dockerDirectory>${basedir}/target/dockerfile</dockerDirectory>
+                   <resources>
+                       <resource>
+                           <targetPath>/</targetPath>
+                           <directory>${project.build.directory}</directory>
+                           <include>${project.build.finalName}.jar</include>
+                       </resource>
+                   </resources>
+               </configuration>
+           </plugin>
         </plugins>
     </build>
 
