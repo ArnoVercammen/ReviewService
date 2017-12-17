@@ -1,5 +1,6 @@
-db\DestinationReviewRepositoryInMemory.class
-main\ReviewApplication.class
+domain\DestinationReviewsRest.class
 main\ReviewController.class
 db\DestinationReviewRepository.class
+db\DestinationReviewRepositoryInMemory.class
+main\ReviewApplication.class
 domain\DestinationReview.class
