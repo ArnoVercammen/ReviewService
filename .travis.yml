@@ -4,10 +4,12 @@ directories:
 - $HOME/.m2
 jdk:
 - oraclejdk8
+script:
+- mvn clean package
 sudo: required
 services:
 - docker
 script:
-- docker login -u $arno123 -p $Arre1317
+- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 - mvn clean package docker:build
 - docker push arno123/reviewservice
